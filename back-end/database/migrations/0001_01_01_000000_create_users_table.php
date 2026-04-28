@@ -18,6 +18,13 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('student_id')->unique()->nullable();
+            $table->string('course')->nullable();
+            $table->string('year_level')->nullable();
+            $table->enum('role', ['student', 'admin', 'officer'])->default('student');
+            $table->string('phone')->nullable();
+            $table->string('qr_code')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
 
