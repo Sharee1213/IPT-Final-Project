@@ -160,10 +160,21 @@ export const api = {
     makeRequest(`/feedback/${id}/respond`, { method: 'POST', token, body: JSON.stringify(payload) }),
 
   // Users (Admin)
-  getUsers: (token: string, params?: any) =>
-    makeRequest('/users', { token, params }),
-  getUserDetail: (token: string, id: number) =>
-    makeRequest(`/users/${id}`, { token }),
-  toggleUserActive: (token: string, id: number) =>
-    makeRequest(`/users/${id}/toggle-active`, { method: 'POST', token }),
-};
+  getCurrentUser: (token: string) =>
+  makeRequest('/auth/profile', { token }),
+
+getProfile: (token: string) =>
+  makeRequest('/auth/profile', { token }),
+
+updateProfile: (token: string, payload: any) =>
+  makeRequest('/auth/profile', { method: 'PUT', token, body: JSON.stringify(payload) }),
+
+// Add these two (for admin):
+deactivateUser: (token: string, id: number) =>
+  makeRequest(`/admin/users/${id}/deactivate`, { method: 'PATCH', token }),
+
+activateUser: (token: string, id: number) =>
+  makeRequest(`/admin/users/${id}/activate`, { method: 'PATCH', token }),
+
+getAdminUsers: (token: string) =>
+  makeRequest('/admin/users', { token }),
