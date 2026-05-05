@@ -123,7 +123,47 @@ This uses `concurrently` to run:
 - Vite frontend build server
 - Frontend dev server on port 3000
 
-## 🗄️ Database
+## � Backend & Frontend Connection
+
+The frontend and backend communicate via **REST API** with **Laravel Sanctum** token-based authentication.
+
+### Configuration Included
+
+✅ **CORS Middleware** - Allows frontend requests from `localhost:3000`  
+✅ **Sanctum Authentication** - API token-based auth  
+✅ **API Client** - Pre-configured in `front-end/lib/api.ts`  
+✅ **Auth Context** - User state management in `front-end/lib/auth-context.tsx`
+
+### How It Works
+
+1. User logs in via frontend → Backend returns API token
+2. Token is stored in browser (localStorage)
+3. Frontend includes token in all API requests (`Authorization: Bearer <token>`)
+4. Backend validates token via Sanctum middleware
+5. Protected routes return data; invalid tokens return 401
+
+### Documentation
+
+For detailed integration guide, see:
+- **[CONNECTION_GUIDE.md](CONNECTION_GUIDE.md)** - Complete API documentation
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick lookup guide
+- **[SETUP_COMPLETE.md](SETUP_COMPLETE.md)** - Setup checklist
+
+### Quick API Usage
+
+```typescript
+import { api } from '@/lib/api';
+
+// Login
+const response = await api.login('email@example.com', 'password');
+const token = response.token;
+
+// Use token in protected routes
+const user = await api.getCurrentUser(token);
+const profile = await api.getProfile(token);
+```
+
+## �🗄️ Database
 
 ### Current Setup
 - **Default**: SQLite (file-based, no server needed)
