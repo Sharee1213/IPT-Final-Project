@@ -10,7 +10,6 @@ export default function LogoutPage() {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Auto-redirect if user is not logged in
   useEffect(() => {
     if (!isAuthenticated && !isLoggingOut) {
       router.push('/login');
@@ -21,7 +20,7 @@ export default function LogoutPage() {
     setIsLoggingOut(true);
     try {
       await logout();
-      router.push('/');
+      router.push('/login'); // Redirect to login after clearing session
     } catch (error) {
       console.error('Logout failed:', error);
       setIsLoggingOut(false);
@@ -29,59 +28,69 @@ export default function LogoutPage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0a0f1e] text-[#f8f9fa] flex items-center justify-center">
-      {/* Background Gradients - Replicating your Landing Page design */}
-      <div className="absolute inset-x-0 top-0 h-96 bg-[radial-gradient(circle_at_top_left,_rgba(201,168,76,0.16),_transparent_24%),radial-gradient(circle_at_right,_rgba(72,36,113,0.18),_transparent_22%)] opacity-80 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.05),_transparent_35%)] pointer-events-none" />
+    <main className="relative min-h-screen overflow-hidden bg-[#0a0f1e] text-[#e6edf3] flex items-center justify-center font-['Sora']">
+      {/* Background Grid - Matching Login/Register */}
+      <style>{`
+        .logout-grid {
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(rgba(56, 139, 253, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(56, 139, 253, 0.04) 1px, transparent 1px);
+          background-size: 48px 48px;
+          pointer-events: none;
+        }
+      `}</style>
+      <div className="logout-grid" />
+
+      {/* Glow Blobs - Matching Login */}
+      <div className="absolute top-[-100px] left-[-100px] w-96 h-96 bg-[#388bfd]/10 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-80px] right-[-80px] w-80 h-80 bg-[#4fd1c5]/10 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-lg px-6 text-center">
         <div className="space-y-8">
-          {/* Badge mimicking your "College of Engineering" tag */}
-          <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] uppercase tracking-[0.2em] text-[#c9a84c] animate-fade-up">
+          {/* Badge matching your COECS-LGU style */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#388bfd]/10 border border-[#388bfd]/25 text-[11px] uppercase tracking-widest text-[#388bfd] font-mono">
+            <span className="w-2 h-2 rounded-full bg-[#388bfd] shadow-[0_0_8px_#388bfd] animate-pulse" />
             Security Session
           </div>
 
           <div className="space-y-4">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Sign <span className="text-[#c9a84c]">Out</span>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              Sign <span className="bg-gradient-to-r from-[#388bfd] to-[#4fd1c5] bg-clip-text text-fill-transparent">Out</span>
             </h1>
-            {/* The Gold Line from your design */}
-            <div className="w-16 h-[1px] bg-[#c9a84c] mx-auto opacity-50"></div>
             <p className="text-[#8b949e] text-lg">
               Are you sure you want to end your session, <br />
-              <span className="text-white font-medium">{user?.name || 'User'}</span>?
+              <span className="text-white font-medium">{user?.name || 'Student'}</span>?
             </p>
           </div>
 
-          {/* Glass Card */}
-          <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-10 shadow-2xl">
+          {/* Glass Card - Same blur as Login Right Panel */}
+          <div className="bg-[#161b2a]/60 backdrop-blur-2xl rounded-[2rem] border border-white/5 p-10 shadow-2xl">
             <div className="flex flex-col gap-4">
-              <Button
-                className="bg-[#c9a84c] hover:bg-[#b89740] text-[#0a0f1e] rounded-full py-6 text-base font-bold transition-all shadow-lg shadow-[#c9a84c]/20"
+              <button
+                className="w-full bg-gradient-to-r from-[#388bfd] to-[#4fd1c5] hover:opacity-90 text-[#0a0f1e] rounded-xl py-4 text-base font-bold transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
                 onClick={handleLogout}
                 disabled={isLoggingOut}
               >
-                {isLoggingOut ? 'Logging out...' : 'Confirm Logout'}
-              </Button>
+                {isLoggingOut ? 'Ending Session...' : 'Confirm Logout'}
+              </button>
               
-              <Button
-                className="bg-transparent border border-white/10 hover:bg-white/5 text-white rounded-full py-6 text-base font-medium transition-all"
+              <button
+                className="w-full bg-transparent border border-white/10 hover:bg-white/5 text-[#8b949e] hover:text-white rounded-xl py-4 text-base font-medium transition-all disabled:opacity-50"
                 onClick={() => router.back()}
                 disabled={isLoggingOut}
               >
-                Cancel & Stay
-              </Button>
+                Cancel & Return
+              </button>
             </div>
             
-            <p className="mt-6 text-[11px] text-[#484f58] uppercase tracking-widest">
-              COECS-LGU Management System
+            <p className="mt-8 text-[10px] text-[#484f58] uppercase tracking-[0.2em] font-mono">
+              COECS-LGU Student Portal
             </p>
           </div>
         </div>
       </div>
-
-      {/* Decorative Glows */}
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#c9a84c]/10 rounded-full blur-[120px] pointer-events-none" />
     </main>
   );
 }
