@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+ 
 :root {
   --navy: #0a1628;
   --deep: #0d1f3c;
@@ -10,7 +10,7 @@
   --card: rgba(255, 255, 255, 0.06);
   --border: rgba(201, 168, 76, 0.18);
 }
-
+ 
 @theme inline {
   --color-background: var(--navy);
   --color-foreground: var(--cream);
@@ -18,19 +18,21 @@
   --font-serif: var(--font-playfair);
   --font-mono: var(--font-space-mono);
 }
-
+ 
 html {
   scroll-behavior: smooth;
 }
-
+ 
 body {
   min-height: 100vh;
   background-color: var(--navy);
   color: var(--cream);
   font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   position: relative;
+  overflow-x: hidden;
 }
-
+ 
+/* Background gradients */
 body::before {
   content: "";
   position: fixed;
@@ -40,10 +42,31 @@ body::before {
     radial-gradient(circle at 80% 15%, rgba(168, 85, 247, 0.14), transparent 28%),
     radial-gradient(circle at 50% 80%, rgba(15, 23, 42, 0.7), transparent 40%);
   pointer-events: none;
+  z-index: -3;
+}
+ 
+/* The Logo Watermark */
+body::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vh;
+  height: 70vh;
+  background-image: url('/images/coecslogo.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.07;
+  filter: grayscale(0) brightness(1.2) saturate(1.4);
+  mix-blend-mode: screen;
+  pointer-events: none;
   z-index: -2;
 }
-
-body::after {
+ 
+/* Global Overlay for depth */
+.bg-overlay {
   content: "";
   position: fixed;
   inset: 0;
@@ -51,70 +74,70 @@ body::after {
   pointer-events: none;
   z-index: -1;
 }
-
+ 
 .font-display {
   font-family: var(--font-playfair), ui-serif, Georgia, serif;
 }
-
+ 
 .font-mono {
   font-family: var(--font-space-mono), ui-monospace, SFMono-Regular, monospace;
 }
-
+ 
 .bg-navy {
   background-color: var(--navy);
 }
-
+ 
 .text-cream {
   color: var(--cream);
 }
-
+ 
 .text-muted {
   color: var(--muted);
 }
-
+ 
 .bg-card {
   background: var(--card);
 }
-
+ 
 .text-gold {
   color: var(--gold);
 }
-
+ 
 .text-navy {
   color: var(--navy);
 }
-
+ 
 .bg-gold {
   background-color: var(--gold);
 }
-
+ 
 .bg-gold2 {
   background-color: var(--gold2);
 }
-
+ 
 .from-gold {
   --tw-gradient-from: var(--gold);
 }
-
+ 
 .to-gold2 {
   --tw-gradient-to: var(--gold2);
 }
-
+ 
 .border-gold {
   border-color: rgba(201, 168, 76, 0.28);
 }
-
+ 
 .glass-card {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(201, 168, 76, 0.18);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
-
+ 
 .glass-card:hover {
   background: rgba(255, 255, 255, 0.1);
 }
-
+ 
 .btn-gold {
   background: linear-gradient(135deg, var(--gold), var(--gold2));
   color: var(--navy);
@@ -122,25 +145,25 @@ body::after {
   letter-spacing: 0.02em;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
+ 
 .btn-gold:hover {
   transform: translateY(-2px);
   box-shadow: 0 20px 40px rgba(201, 168, 76, 0.28);
 }
-
+ 
 .btn-outline {
   border: 1px solid rgba(201, 168, 76, 0.24);
   color: var(--cream);
   background: rgba(255, 255, 255, 0.04);
   transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
-
+ 
 .btn-outline:hover {
   background: rgba(201, 168, 76, 0.08);
   border-color: var(--gold);
   transform: translateY(-2px);
 }
-
+ 
 .badge {
   display: inline-flex;
   align-items: center;
@@ -155,38 +178,38 @@ body::after {
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
-
+ 
 .gold-line {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.5), transparent);
   animation: shimmer 3s ease-in-out infinite;
 }
-
+ 
 @keyframes shimmer {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
-
+ 
 .scroll-bounce {
   animation: bounce 2s ease-in-out infinite;
 }
-
+ 
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(8px); }
 }
-
+ 
 .reveal {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
+ 
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
+ 
 .animate-fade-up-1,
 .animate-fade-up-2,
 .animate-fade-up-3,
@@ -196,20 +219,21 @@ body::after {
   transform: translateY(20px);
   animation: fadeUp 0.8s ease forwards;
 }
-
+ 
 .animate-fade-up-1 { animation-delay: 0.1s; }
 .animate-fade-up-2 { animation-delay: 0.25s; }
 .animate-fade-up-3 { animation-delay: 0.4s; }
 .animate-fade-up-4 { animation-delay: 0.55s; }
 .animate-fade-up-5 { animation-delay: 0.7s; }
-
+ 
 @keyframes fadeUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
+ 
 @media (max-width: 768px) {
   .hide-mobile { display: none !important; }
+  body::after { width: 40vh; height: 40vh; }
 }
